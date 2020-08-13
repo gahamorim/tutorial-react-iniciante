@@ -1,32 +1,23 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { listRepositories } from '../api/github';
 import Item from '../components/Item'
 
-class Repositories extends Component {
-  constructor(props) {
-    super(props)
-  
-    this.state = {
-       data: [],
-    }
-  }
+function Repositories(){
+    const [data, setData] = useState([]);
 
-  componentDidMount(){
-    listRepositories()
-    .then(data => {
-      this.setState({ data })
+    useEffect(() => {
+        listRepositories()
+        .then(data => {
+            setData(data);
+        })
     })
-  }
-  
-  render() {
-    const { data } = this.state;
+
     return (
         <ul>
           {data.map(item => <Item key={item.id} {...item}/>)}
         </ul>
-    )
-  };
+    )    
 }
 
 export default Repositories;
